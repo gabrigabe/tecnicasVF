@@ -11,4 +11,5 @@ public interface ProdutoRepository extends JpaRepository<Produtos, Integer> {
 
     Produtos getProdutosByCodbarras(Long codbarras);
     List<Produtos> findAllByCategoria(String categoria);
+    List<Produtos> findAllByQuantidadeIs(Integer quantidade);
 }

@@ -28,24 +28,27 @@ public class ProdutosService {
     public List<Produtos> findAllByCategoria(String categoria) {
         List<Produtos> listacategorias = produtoRepository.findAllByCategoria(categoria);
             if(listacategorias.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria inexistente");
             }
             return listacategorias;
 
+    }
+    public List<Produtos> findAllByQuantidadeIs(Integer quantidade){
+        return produtoRepository.findAllByQuantidadeIs(0);
     }
 
     public Produtos findById(Integer id) {
         try{
             return produtoRepository.findById(id).get();
         }catch(NoSuchElementException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id inexistente");
         }
     }
 
     public Produtos getProdutosByCodbarras(Long codbarras){
             Produtos codbarra = produtoRepository.getProdutosByCodbarras(codbarras);
             if(codbarra == null){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Codigo de barras inexistente");
             }
             return codbarra;
     }
@@ -56,9 +59,9 @@ public class ProdutosService {
         return produtos;
     }
     public Produtos update(Produtos produtos) {
-            Optional<Produtos> teste = produtoRepository.findById(produtos.getId());
-            if(teste.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            Optional<Produtos> idproduto = produtoRepository.findById(produtos.getId());
+            if(idproduto.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id inexistente");
             }
             produtoRepository.save(produtos);
             return produtos;
@@ -68,7 +71,7 @@ public class ProdutosService {
         try{
             produtoRepository.deleteById(id);
         }catch(EmptyResultDataAccessException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id inexistente");
         }
     }
 }

@@ -5,6 +5,8 @@ import br.edu.uni7.tecnicasvf.service.ProdutosService;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,7 @@ public class ProdutosController {
     @ResponseBody
     @RequestMapping(value = "produtos", method = RequestMethod.POST)
     public Produtos create(@RequestBody Produtos produtos){
-        return  service.create(produtos);
+        return service.create(produtos);
     }
 
 
@@ -40,8 +42,14 @@ public class ProdutosController {
 
     @ResponseBody
     @RequestMapping(value = "produtos/categoria/{categoria}", method = RequestMethod.GET)
-    public List<Produtos> findBycodbarras(@PathVariable String categoria){
+    public List<Produtos> findByCategoria(@PathVariable String categoria){
         return service.findAllByCategoria(categoria);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "produtos/emfalta", method = RequestMethod.GET)
+    public List<Produtos> findAllByQuantidadeIs(){
+        return service.findAllByQuantidadeIs(0);
     }
 
     @ResponseBody
